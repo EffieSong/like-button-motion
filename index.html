@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="./lib/p5.js"></script>
+  <script src="./lib/p5.dom.min.js"></script>
+  <script src="./lib/p5.sound.min.js"></script>
+  <link rel="stylesheet" href="../demo.css">
+  <meta charset="utf-8">
+
+</head>
+
+<body>
+
+  <div id="interactive-demo-container">
+    <div class="device-container">
+        <div class="device">
+            <button class="like-button"></button>
+            <div id="cursor-container">
+                <div class="cursorr"></div>
+            </div>
+            <div class="canvas-container"></div>
+        </div>
+    </div>
+    <div class="configuration">
+      <div class="controlpanel-container">
+        <ul id="animation-options">
+            <li class="cell active" id="randomdirection">随即方向发射</li>
+            <li class="cell" id="presstocontroldirection">长按控制方向</li>
+        </ul>
+    </div>
+    </div>
+</div>
+
+  <script src="./lib/CLASSES.js"></script>
+  <script src="./lib/other-functions.js"></script>
+  <script src="./main.js"></script>
+
+</body>
+
+</html>
