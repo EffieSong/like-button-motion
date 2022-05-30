@@ -1,98 +1,163 @@
+:root {
+  /* darkmode */
+  --color-gray-100: hsl(210deg, 15%, 20%);
+  --color-gray-200: hsl(210deg, 15%, 25%);
+  --color-gray-300: hsl(210deg, 10%, 40%);
+  --color-gray-400: hsl(210deg, 9%, 45%);
+  --color-gray-500: hsl(210deg, 8%, 50%);
+  --color-gray-600: hsl(210deg, 12%, 55%);
+  --color-gray-700: hsl(210deg, 14%, 66%);
+  --color-gray-900: hsl(210deg, 25%, 88%);
+  --color-gray-1000: hsl(210deg, 25%, 96%);
+
+  --color-background: hsl(210deg, 30%, 8%);
+
+  --device-width:251px;
+  --device-height:490px;
+  --canvas3dHeight:700px;
+  --canvas3dWidth:500px;
+  --likeButtonTop:247px;
+  --likeButtonLeft:198px;
+
+  /* lightmode */
+  /* --color-gray-100: hsl(225deg, 25%, 95%);
+  --color-gray-200: hsl(225deg, 16%, 90%);
+  --color-gray-300: hsl(225deg, 8%, 80%);
+  --color-gray-400: hsl(225deg, 8%, 70%);
+  --color-gray-500: hsl(225deg, 7%, 60%);
+  --color-gray-600: hsl(225deg, 15%, 50%);
+  --color-gray-700: hsl(225deg, 12%, 40%);
+  --color-gray-900: hsl(225deg, 25%, 20%);
+  --color-gray-1000: hsl(225deg, 15%, 15%); */
+
+}
+
+@font-face {
+  font-family: "Test Founders Grotesk";
+  src: url("./fonts/Test Founders Grotesk Medium 500.otf");
+  font-weight: medium;
+}
+
+@font-face {
+  font-family: "Test Founders Grotesk";
+  src: url("./fonts/Test Founders Grotesk 400.otf");
+  font-weight: normal;
+}
 
 * {
   margin: 0;
   padding: 0;
+  /* border: 1px solid blue; */
+  font-size: 20px;
+  font-family: 'Test Founders Grotesk';
+  font-weight: normal;
+  color: white;
+
+
 }
+
+
 .device {
-  width: 375px;
-  height: 812px;
-  position: relative;
+  width: fit-content;
+  height: fit-content;
+  /* position:absolute; 
+  right:38px; */
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: url(./img/cursor.png)20 20, auto;
 
-  /* cursor: none; */
 }
+
+.device:active {
+  cursor: url(./img/cursor-active.png) 20 20, auto;
+}
+
 .canvas-container {
-  position: absolute;
-  width: 375px;
-  height: 812px;
+  /* position: absolute; */
+  width: var(--device-width);
+  height: var(--device-height);
   overflow: hidden;
   z-index: 0;
-  transform: scale(0.8);
-  background-image: url('./img/Feed\ -\ Image\ raw\ 1.png');
+  background-image: url('./img/devicebg.png');
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 40px;
-  box-shadow:  0px 3px 30px rgba(73, 73, 90, 0.384);
+
 }
-#cursor-container{
-  width:80%;
-  height:80%;
-    overflow: hidden;
-}
-.cursorr {
-  position:fixed;
-  border-radius: 50%;
-  background-color: rgba(80, 80, 80, 0.185);
-  z-index: 10;
-}
+
+
 .canvas-3d {
   position: absolute;
-  top: 48px;
-  left: 8px;
+  top: calc(var(--likeButtonTop) - var(--canvas3dHeight)/2);
+  left: calc(var(--likeButtonLeft) - var(--canvas3dWidth)/2);
   border: 1px solid orchid;
 }
+
 .like-button {
   position: absolute;
-  top: 426px;
-  left: 280px;
+  top: var(--likeButtonTop);
+  left: var(--likeButtonLeft);
   width: 19px;
   height: 19px;
   z-index: 100;
-  background-color: rgba(218, 112, 214, 0);
+  background-color: rgba(133, 32, 129, 0);
   opacity: 0;
-  background-image: url('./img/Heart.png');
-  background-size:contain;
-  outline:none;
-  border:none;
+  background-image: url('./img/likebutton.png');
+  background-size: contain;
+  outline: none;
+  border: none;
   cursor: pointer;
   transition: 0.1s;
 }
 
-.animate{
+.animate {
   animation-duration: 0.3s;
   animation-name: buttonChangeScale;
 }
+
 @keyframes buttonChangeScale {
   0% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.25);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-#interactive-demo-container{
- width:100%;
- height:100%;
- display: flex;
- flex-flow: row wrap;
+#interactive-demo-container {
+  margin: auto;
+  max-width: 866px;
+  height: 100%;
+  padding: 100px 20px 100px 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  background-color: #1A1E24;
 
 }
-.device-container{
-  height:100%;
- flex-grow: 1;
+
+.device-container {
+  width: fit-content;
+  height: fit-content;
+  margin-right: 38px;
+  border-radius: 30px;
+  border: 2px solid white;
+  box-shadow: 0px 3px 80px rgba(0, 0, 0, 0.60);
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
-  background-color:#F7F7F7 ;
+  overflow: hidden;
+
+
 }
 
 /* control panel */
@@ -126,16 +191,16 @@
   height: 3px;
   border-radius: 5px;
   outline: none;
-  background: #C4C4C4;
+  background: var(--color-gray-300);
 }
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border:2px solid black;
+  border: 2px solid black;
   background: rgb(240, 240, 240);
   cursor: pointer;
 }
@@ -145,49 +210,80 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border:2px solid black;
+  border: 2px solid black;
   background: rgb(240, 240, 240);
   cursor: pointer;
 }
 
 
 /* ----------------------------------------------------------------------------- */
-.configuration{
-  width:233px;
-  flex-grow: 0;
+.configuration {
+  max-width: 265px;
+  padding-top: 20px;
+  margin-left: 38px;
+  flex-grow: 1;
   height: 100%;
-  background-color:white;
-  font-weight:500;
+  font-weight: 500;
 }
+
+
 .controlpanel-container {
   background-clip: content-box;
-  width:100% ;
+  width: 100%;
   height: fit-content;
-  max-height: 200px;
-  border: solid 1px #E0E0E0;
-  overflow: scroll;
+  max-height: 280px;
 }
-.parameter-adjusting{
+
+
+
+.parameter-adjusting {
   padding-top: 15px;
   padding-bottom: 15px;
   overflow: hidden;
 }
+
 .cell {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 15px;
-  font-family: 'PingFang-SC';
-  padding: 15px 22px;
+  font-size: 20px;
+  font-family: 'Test Founders Grotesk';
+  font-weight: normal;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  /* border: 1px solid yellow; */
+
 }
 
-#animation-options li:hover{
-  background-color: #DBE4F6;
+.parameter-name {
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+
+}
+.type-selection{
+  max-height: 220px;
+  overflow: scroll;
+}
+
+ul{
+    border: 2px solid var(--color-gray-300);
+    border-radius: 6px;
+}
+
+li {
+  padding: 0px 22px;
+  color: var(--color-gray-900);
+}
+
+li:not(.active):hover {
+  background-color: var(--color-gray-100);
   cursor: pointer;
 }
-.active{
-  background-color: #dbe4f673;
+
+.active {
+  background-color: var(--color-gray-200);
 }
+
 
 .d-flex-row-spacebetween {
   display: flex;
@@ -196,6 +292,3 @@
   justify-content: space-between;
   margin-bottom: 12px;
 }
-
-
-

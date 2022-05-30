@@ -16,7 +16,7 @@ var data = [{
 
     mousePressed: function (hover = buttonIsHover) {
         if (hover) {
-            let s = new RandomDirectionShoot(mouseX, mouseY);
+            let s = new RandomDirectionShoot(like.x, like.y);
             shootStars.push(s);
             loop();
         }
@@ -59,7 +59,9 @@ var data = [{
 let shootStars = [];
 let e;
 let CNV;
-let emojiSize = 38;
+let CANVASWIDTH = 251;
+let CANVASHEIGHT = 490;
+let emojiSize = 30;
 let like_button = document.querySelector(".like-button");
 let buttonIsHover = false;
 like_button.onmouseover = function () {
@@ -72,9 +74,9 @@ like_button.onmouseleave = function () {
 //--------------------------presstocontroldirection------------------------------------------
 let active = false;
 let like = {
-    x: 300,
-    y: 436,
-    l: 40
+    x: 196+10,
+    y: 245+10,
+    l: 20
 };
 let myShoot;
 
@@ -83,14 +85,12 @@ function continueShoot() {
     let s = new RainballShoot(like.x, like.y, [angle - 0.2 * PI, angle + 0.2 * PI]);
     shootStars.push(s);
 }
-
-
 // ----------------------------------------------------------------------------
 function setup() {
-    CNV = createCanvas(375, 812);
+    CNV = createCanvas(CANVASWIDTH, CANVASHEIGHT);
     CNV.class("canvas");
-    let cnvNode = document.querySelector(".canvas")
     let cnvContainer = document.querySelector(".canvas-container");
+    let cnvNode = document.querySelector(".canvas")
     cnvContainer.appendChild(cnvNode);
     textAlign(CENTER, CENTER);
     textSize(emojiSize);
@@ -143,7 +143,8 @@ function RainballShoot(x, y, spreadAngle = [0, TWO_PI], cnv = CNV) {
         star.edge = "none";
         if (i > 0) star.sprite = 'ellipse';
         star.customUpdateFunction = function () {
-            this.scale = this.scale < 30 ? this.scale + 1 : 30;
+            let d = (emojiSize-this.scale)/ colors.length;
+            this.scale = this.scale < emojiSize ? this.scale + d : emojiSize;
             switch (true) {
                 case this.location.x <= 0:
                     this.vel.x *= -1;
@@ -178,7 +179,7 @@ function RainballShoot(x, y, spreadAngle = [0, TWO_PI], cnv = CNV) {
         } else if (this.currentSate && !this.preState) {
             let n = lastP.edge == "left" || lastP.edge == "right" ? 50 : 30;
             let spreadAngle = lastP.edge == "left" ? [-0.5 * PI, 0.5 * PI] : lastP.edge == "right" ? [0.5 * PI, 1.5 * PI] : [0, 2 * PI];
-            let e = new Explode(lastP.location.x, lastP.location.y, n, 7, spreadAngle);
+            let e = new Explode(lastP.location.x, lastP.location.y, n, 5, spreadAngle);
             this.explodes.push(e);
         }
         this.explodes.forEach(item => item.run());
@@ -264,3 +265,4 @@ function RandomDirectionShoot(x, y, cnv = CNV) {
     }
 
 }
+
