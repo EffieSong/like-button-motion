@@ -27,7 +27,7 @@ likeButton.onclick = function () {
   likeButton.addEventListener('animationend', animationEndCallback);
   likeButton.style.opacity = "1";
 };
-animationEndCallback = (e) => {
+let animationEndCallback = (e) => {
   likeButton.removeEventListener('animationend', animationEndCallback);
   likeButton.classList.remove('animate');
 }
@@ -38,9 +38,10 @@ animaOptions.forEach(item => {
   item.onclick = function () {
     OPTIONINDEX = getOptionIndex(item.id, ANIMAOPTIONS);
     boomAnimation.animate(ANIMAOPTIONS[getOptionIndex(item.id, ANIMAOPTIONS)]);
-    // Add active class to the current button (highlight it)
     likeButton.classList.add('animate');
     likeButton.addEventListener('animationend', animationEndCallback);
+    
+    // Add active class to the current button (highlight it)
     let current = document.getElementsByClassName("active");
     current[0].className = current[0].className.replace(" active", "");
     this.className += " active";
