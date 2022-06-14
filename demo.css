@@ -65,6 +65,7 @@ body{
   height: fit-content;
   /* position:absolute; 
   right:38px; */
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +153,7 @@ body{
   height: fit-content;
   margin-right: 38px;
   border-radius: 30px;
-  border: 2px solid white;
+  border: 5px solid rgb(121, 140, 255);
   box-shadow: 0px 3px 80px rgba(0, 0, 0, 0.60);
   display: flex;
   position: relative;

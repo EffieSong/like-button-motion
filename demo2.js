@@ -185,14 +185,14 @@ let ANIMAOPTIONS = [{
     particleCount: [6, 10],
     damping: 0.95,
     mass: 1.5,
-    lifeSpan: 40,
+    lifeSpan: 45,
     scalar: 1.1,
     setInitVelocity: function () {
       let startSpeed = unit * randomInRange(0.2, 0.8);
       return new THREE.Vector3(randomInRange(-1, 1), randomInRange(-1, 1), randomInRange(-1, 2)).normalize().multiplyScalar(startSpeed);
     },
     customParticleUpdate: function () {
-      let center = new THREE.Vector3(-3 * unit, 6 * unit, -7 * unit);
+      let center = new THREE.Vector3(-3 * unit, 4 * unit, -7 * unit);
       let d = center.distanceTo(this.position);
       let cohesionForce = center.sub(this.position).normalize().multiplyScalar(0.06 * unit * d);
       this.force[0] = cohesionForce;

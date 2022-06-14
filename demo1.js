@@ -1,5 +1,168 @@
 "use strict"
 
+//------------------Instruction Animation------------------//
+let COUNT = 0;
+let Count_ = 0;
+let OPTIONINDEX = 0;
+let OptionIndex_=0;
+let LineLength=0;
+
+//states;
+let FistClicked = 0; // 第一次点击like button
+let firstChanged =0; // 第一次选择“directional shooting”
+let instruction02Played = 0; 
+let state_shot02=0;
+let state_shot01=0;
+
+let finger = document.getElementById("instructionIcon");
+let cursor = document.getElementById("instructionCursor");
+let instructionText01= document.getElementById("instruction-text-01");
+let instructionText02= document.getElementById("instruction-text-02");
+
+
+
+var properties = {
+    x: 0,
+    y: 0,
+    opacity: 1,
+}
+var cursorProperties = {
+    x: 0,
+    y: 0,
+    opacity: cursor.style.opacity,
+    scale: 1,
+}
+
+let tween_fingerUpDown = new TWEEN.Tween(properties)
+    .to({
+        y: 10,
+    }, 700).repeat(Infinity).yoyo(true)
+    .easing(TWEEN.Easing.Cubic.InOut).onUpdate(() => {
+        finger.style.transform = `translateY(${properties.y}px)`;
+    }).start();
+
+
+let tween_fingerHide = new TWEEN.Tween(properties)
+    .to({
+        opacity: 0,
+    }, 200)
+    .easing(TWEEN.Easing.Linear.None).onUpdate(() => {
+        finger.style.opacity = `${properties.opacity}`;
+    });
+
+
+
+let tween_cursor01 = new TWEEN.Tween(cursorProperties)
+    .to({
+        x: 0,
+        y: 0,
+        opacity: 1,
+        scale: 0.8
+    }, 100)
+    .easing(TWEEN.Easing.Cubic.Out).onUpdate(() => {
+        cursor.style.transform = `translateX(${cursorProperties.x}px) translateY(${cursorProperties.y}px) scale(${cursorProperties.scale},${cursorProperties.scale})`;
+        cursor.style.opacity = `${cursorProperties.opacity}`;
+    }).delay(700);
+
+let tween_cursor02 = new TWEEN.Tween(cursorProperties)
+    .to({
+        x: -90,
+        y: -90,
+        opacity: 1,
+        scale: 0.8
+    }, 800)
+    .easing(TWEEN.Easing.Cubic.Out).onUpdate(() => {
+        cursor.style.transform = `translateX(${cursorProperties.x}px) translateY(${cursorProperties.y}px) scale(${cursorProperties.scale},${cursorProperties.scale})`;
+        cursor.style.opacity = `${cursorProperties.opacity}`;
+    }).delay(500);
+
+// let tween_fingerMove = new TWEEN.Tween(properties)
+//     .to({
+//         x: -90,
+//         y: -90,
+//         opacity: 1,
+//     }, 800)
+//     .easing(TWEEN.Easing.Cubic.Out).onUpdate(() => {
+//         finger.style.transform = `translateX(${properties.x}px) translateY(${properties.y}px)`;
+//         finger.style.opacity = `${properties.opacity}`;
+//     }).delay(1000);
+
+let tween_cursor03 = new TWEEN.Tween(cursorProperties)
+    .to({
+        x: -90,
+        y: -90,
+        opacity: 0.5,
+        scale: 1
+    }, 100)
+    .easing(TWEEN.Easing.Cubic.Out).onUpdate(() => {
+        cursor.style.transform = `translateX(${cursorProperties.x}px) translateY(${cursorProperties.y}px) scale(${cursorProperties.scale},${cursorProperties.scale})`;
+        cursor.style.opacity = `${cursorProperties.opacity}`;
+    }).delay(300);
+
+tween_cursor01.chain(tween_cursor02);
+tween_cursor02.chain(tween_cursor03);
+
+tween_cursor03.onComplete(() => {
+    setTimeout(()=>{
+        cursor.style.transform = `translateX(0px) translateY(0px) scale(1,1)`;
+        cursor.style.opacity = `0.5`;
+        tween_cursor01.start()
+    },500);
+});
+
+
+
+
+animateInstruction();
+
+function animateInstruction() {
+    requestAnimationFrame(animateInstruction)
+
+    FistClicked = COUNT == 1 && !Count_ == 1 ? 1 : 0;
+    Count_ = COUNT;
+
+    if(!firstChanged && !instruction02Played){
+        firstChanged =  OPTIONINDEX == 1 && !OptionIndex_ == 1 ? 1 : 0;
+    }
+
+    OptionIndex_=OPTIONINDEX;
+
+    if (FistClicked) {
+        tween_fingerHide.start();
+        setTimeout(()=>{
+            instructionText01.style.opacity=1;
+            setTimeout(()=>{
+                instructionText01.style.display="none";
+            },5000);
+        },800);
+    }
+
+    if(firstChanged && !instruction02Played){
+        instruction02Played=1;
+    }
+    
+
+    // console.log( finger.style.transform);
+    TWEEN.update();
+}
+
+
+
+
+
+let likeButton = document.querySelector(".like-button");
+let buttonIsHover = false;
+likeButton.onmouseover = function () {
+    buttonIsHover = true
+    console.log(buttonIsHover);
+};
+likeButton.onmouseleave = function () {
+    buttonIsHover = false
+    console.log(buttonIsHover);
+};
+
+
+
 var data = [{
     key: "randomdirection",
     draw: function (cnv = CNV) {
@@ -14,11 +177,13 @@ var data = [{
         noStroke();
     },
 
-    mousePressed: function (hover = buttonIsHover) {
-        if (hover) {
+    mousePressed: function () {
+        if (buttonIsHover) {
             let s = new RandomDirectionShoot(like.x, like.y);
             shootStars.push(s);
             loop();
+            state_shot01=1;
+       
         }
     },
     mouseReleased: function () {},
@@ -36,16 +201,30 @@ var data = [{
             noLoop();
         }
         noFill();
-        strokeWeight(1);
-        stroke(0);
-        rect(like.x, like.y, like.l, like.l);
+        strokeWeight(7);
+        stroke('rgba(100%,80%,10%,0.2)');
+      //  rect(like.x, like.y, like.l, like.l);
         if (mouseIsPressed && active) {
             line(like.x, like.y, mouseX, mouseY);
+            LineLength = dist(like.x, like.y, mouseX, mouseY);
         }
+        if(LineLength>100){
+            tween_cursor01.stop();
+            cursor.style.opacity=0;
+            state_shot02=1;
+
+            setTimeout(()=>{
+                instructionText02.style.opacity=1;
+                setTimeout(()=>{
+                    instructionText02.style.display="none";
+                },4000);
+            },800);
+        };
     },
-    mousePressed: function (hover = buttonIsHover) {
+    mousePressed: function () {
         loop();
-        if (hover) {
+        if (buttonIsHover) {
+
             myShoot = setInterval(continueShoot, 80);
             active = true;
         }
@@ -55,27 +234,23 @@ var data = [{
         clearInterval(myShoot);
     },
 }];
+
+
+
 //------------------randomdirection & presstocontroldirection----------------------------
 let shootStars = [];
 let e;
 let CNV;
 let CANVASWIDTH = 251;
 let CANVASHEIGHT = 490;
-let emojiSize = 30;
-let like_button = document.querySelector(".like-button");
-let buttonIsHover = false;
-like_button.onmouseover = function () {
-    buttonIsHover = true
-};
-like_button.onmouseleave = function () {
-    buttonIsHover = false
-};
+let emojiSize = 29;
+
 
 //--------------------------presstocontroldirection------------------------------------------
 let active = false;
 let like = {
-    x: 196+10,
-    y: 245+10,
+    x: 196 + 10,
+    y: 245 + 10,
     l: 20
 };
 let myShoot;
@@ -98,25 +273,64 @@ function setup() {
 }
 
 function draw() {}
+
 function mousePressed() {}
+
 function mouseReleased() {}
 draw = data[0].draw;
 mousePressed = data[0].mousePressed;
 mouseReleased = data[0].mouseReleased;
 
+
+//--------------Click the like button to trigger the icon animation-------------//
+
+likeButton.onclick = function () {
+    likeButton.classList.add('animate');
+    likeButton.addEventListener('animationend', animationEndCallback);
+    likeButton.style.opacity = "1";
+    COUNT += 1;
+};
+let animationEndCallback = (e) => {
+    likeButton.removeEventListener('animationend', animationEndCallback);
+    likeButton.classList.remove('animate');
+}
+
+//--------------Click option list to trigger the canvas animation-------------//
+
 let animaOptions = document.querySelectorAll("#animation-options li");
 animaOptions.forEach((item, index) => {
+
     item.onclick = function () {
+   
         // Add active class to the current button (highlight it)
         let current = document.getElementsByClassName("active");
         current[0].className = current[0].className.replace(" active", "");
         this.className += " active";
 
         draw = data[index].draw;
-        console.log(index);
+        OPTIONINDEX = index;
+        console.log("option==", index);
+
+        if(index==1){
+            tween_fingerUpDown.stop();
+            finger.style.opacity=0;
+             if(!state_shot02){
+                cursor.style.opacity='0.5';
+                cursor.style.transform = `translateX(0px) translateY(0px) scale(1,1)`;
+                tween_cursor01.start();
+            }
+        }
+
+        if(index==0){
+            tween_cursor01.stop();
+            cursor.style.opacity=0;
+        }
+
         mousePressed = data[index].mousePressed;
         mouseReleased = data[index].mouseReleased;
-        
+
+        COUNT = 0;
+
     };
 });
 
@@ -143,7 +357,7 @@ function RainballShoot(x, y, spreadAngle = [0, TWO_PI], cnv = CNV) {
         star.edge = "none";
         if (i > 0) star.sprite = 'ellipse';
         star.customUpdateFunction = function () {
-            let d = (emojiSize-this.scale)/ colors.length;
+            let d = (emojiSize - this.scale) / colors.length;
             this.scale = this.scale < emojiSize ? this.scale + d : emojiSize;
             switch (true) {
                 case this.location.x <= 0:
@@ -265,4 +479,3 @@ function RandomDirectionShoot(x, y, cnv = CNV) {
     }
 
 }
-
