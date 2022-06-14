@@ -11,6 +11,7 @@ let LineLength=0;
 let FistClicked = 0; // 第一次点击like button
 let firstChanged =0; // 第一次选择“directional shooting”
 let instruction02Played = 0; 
+let instruction01IsOver = 0; 
 let state_shot02=0;
 let state_shot01=0;
 
@@ -48,7 +49,7 @@ let tween_fingerHide = new TWEEN.Tween(properties)
     }, 200)
     .easing(TWEEN.Easing.Linear.None).onUpdate(() => {
         finger.style.opacity = `${properties.opacity}`;
-    });
+    }).onComplete(()=>{instruction01IsOver=true});
 
 
 
@@ -128,7 +129,7 @@ function animateInstruction() {
     OptionIndex_=OPTIONINDEX;
 
     if (FistClicked) {
-        tween_fingerHide.start();
+        if(!instruction01IsOver)tween_fingerHide.start();
         setTimeout(()=>{
             instructionText01.style.opacity=1;
             setTimeout(()=>{
@@ -154,11 +155,9 @@ let likeButton = document.querySelector(".like-button");
 let buttonIsHover = false;
 likeButton.onmouseover = function () {
     buttonIsHover = true
-    console.log(buttonIsHover);
 };
 likeButton.onmouseleave = function () {
     buttonIsHover = false
-    console.log(buttonIsHover);
 };
 
 
