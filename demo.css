@@ -12,14 +12,13 @@
 
   --color-background: hsl(210deg, 30%, 8%);
 
-  --device-width:251px;
-  --device-height:490px;
-  --canvas3dHeight:700px;
-  --canvas3dWidth:500px;
-  --likeButtonTop:247px;
-  --likeButtonLeft:198px;
-
-  --device-scale:1.1;
+  --device-width:375px;
+  --device-height:732px;
+  --canvas3dHeight:800px;
+  --canvas3dWidth:600px;
+  --likeButtonTop:51%;
+  --likeButtonLeft:80%;
+  --device-scale:0.85;
 
   /* lightmode */
   /* --color-gray-100: hsl(225deg, 25%, 95%);
@@ -51,7 +50,8 @@
   padding: 0;
   /* border: 1px solid blue; */
   font-size: 20px;
-  font-family: 'Test Founders Grotesk';
+  font-family:monospace,'Courier New', Courier;
+  /* //    Courier New, Courier, */
   font-weight: normal;
   color: white;
 
@@ -65,19 +65,18 @@ body{
 .device {
   width: fit-content;
   height: fit-content;
-  /* position:absolute; 
-  right:38px; */
+  position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: url(./img/cursor.png)20 20, auto;
+  cursor: url(./img/cursor.png) 30 30, auto;
   /* transform: scale( var(--device-scale), var(--device-scale)); */
 
 }
 
 .device:active {
-  cursor: url(./img/cursor-active.png) 20 20, auto;
+  cursor: url(./img/cursor-active.png) 30 30, auto;
 }
 
 
@@ -116,27 +115,30 @@ body{
   border: none;
   cursor: pointer;
   transition: 0.1s;
+  transform: scale(1.5);
 }
 
 .animate {
-  animation-duration: 0.3s;
+  animation-duration: 0.4s;
   animation-name: buttonChangeScale;
 }
 
 @keyframes buttonChangeScale {
   0% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.5);
   }
 
   50% {
     opacity: 1;
-    transform: scale(1.25);
+    transform: scale(1.9);
+
   }
 
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.5);
+
   }
 }
 

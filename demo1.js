@@ -36,8 +36,8 @@ var cursorProperties = {
 
 let tween_fingerUpDown = new TWEEN.Tween(properties)
     .to({
-        y: 10,
-    }, 700).repeat(Infinity).yoyo(true)
+        y: 20,
+    }, 600).repeat(Infinity).yoyo(true)
     .easing(TWEEN.Easing.Cubic.InOut).onUpdate(() => {
         finger.style.transform = `translateY(${properties.y}px)`;
     }).start();
@@ -67,8 +67,8 @@ let tween_cursor01 = new TWEEN.Tween(cursorProperties)
 
 let tween_cursor02 = new TWEEN.Tween(cursorProperties)
     .to({
-        x: -90,
-        y: -90,
+        x: -120,
+        y: -150,
         opacity: 1,
         scale: 0.8
     }, 800)
@@ -77,21 +77,11 @@ let tween_cursor02 = new TWEEN.Tween(cursorProperties)
         cursor.style.opacity = `${cursorProperties.opacity}`;
     }).delay(500);
 
-// let tween_fingerMove = new TWEEN.Tween(properties)
-//     .to({
-//         x: -90,
-//         y: -90,
-//         opacity: 1,
-//     }, 800)
-//     .easing(TWEEN.Easing.Cubic.Out).onUpdate(() => {
-//         finger.style.transform = `translateX(${properties.x}px) translateY(${properties.y}px)`;
-//         finger.style.opacity = `${properties.opacity}`;
-//     }).delay(1000);
 
 let tween_cursor03 = new TWEEN.Tween(cursorProperties)
     .to({
-        x: -90,
-        y: -90,
+        x: -120,
+        y: -150,
         opacity: 0.5,
         scale: 1
     }, 100)
@@ -202,7 +192,7 @@ var data = [{
         noFill();
         strokeWeight(7);
         stroke('rgba(100%,80%,10%,0.2)');
-      //  rect(like.x, like.y, like.l, like.l);
+        // rect(like.x, like.y, like.l, like.l);
         if (mouseIsPressed && active) {
             line(like.x, like.y, mouseX, mouseY);
             LineLength = dist(like.x, like.y, mouseX, mouseY);
@@ -240,16 +230,17 @@ var data = [{
 let shootStars = [];
 let e;
 let CNV;
-let CANVASWIDTH = 251;
-let CANVASHEIGHT = 490;
-let emojiSize = 29;
+let CANVASWIDTH = parseInt(cssVar("device-width"))||375;
+let CANVASHEIGHT = parseInt(cssVar("device-height"))||812;
+let emojiSize = 38;
 
 
 //--------------------------presstocontroldirection------------------------------------------
 let active = false;
+
 let like = {
-    x: 196 + 10,
-    y: 245 + 10,
+    y: CANVASHEIGHT*parseInt(cssVar("likeButtonTop"))/100+10,
+    x: CANVASWIDTH*parseInt(cssVar("likeButtonLeft"))/100+10,
     l: 20
 };
 let myShoot;
@@ -341,6 +332,7 @@ function RainballShoot(x, y, spreadAngle = [0, TWO_PI], cnv = CNV) {
     this.spreadAngle = spreadAngle;
     this.isDead = false;
 
+
     let angle = random(this.spreadAngle[0], this.spreadAngle[1]);
     this.vel = createVector(cos(angle), -sin(angle)).normalize().mult(random(7, 18));
 
@@ -409,7 +401,7 @@ function RainballShoot(x, y, spreadAngle = [0, TWO_PI], cnv = CNV) {
 
 }
 
-function RandomDirectionShoot(x, y, cnv = CNV) {
+function RandomDirectionShoot(x, y, emojiSize_ = emojiSize,cnv = CNV) {
     this.particles = [];
     this.explodes = [];
     this.currentState = false;
@@ -427,21 +419,21 @@ function RandomDirectionShoot(x, y, cnv = CNV) {
         star.rotation = random(-PI / 4, PI / 4);
         if (i > 0) star.sprite = 'ellipse';
         star.customUpdateFunction = function () {
-            this.scale = this.scale < emojiSize ? this.scale + 1 : emojiSize;
+            this.scale = this.scale < emojiSize_ ? this.scale + 1 : emojiSize_;
             switch (true) {
                 case this.location.x <= 0:
                     this.vel.x *= -1;
                     this.edge = "left";
                     break;
-                case this.location.x >= cnv.width - emojiSize / 3:
+                case this.location.x >= cnv.width - emojiSize_ / 3:
                     this.vel.x *= -1;
                     this.edge = "right";
                     break;
-                case this.location.y <= 0 + emojiSize / 2:
+                case this.location.y <= 0 + emojiSize_ / 2:
                     this.vel.y *= -1;
                     this.edge = "top";
                     break;
-                case this.location.y >= cnv.height - emojiSize / 2:
+                case this.location.y >= cnv.height - emojiSize_ / 2:
                     this.vel.y *= -1;
                     this.edge = "bottom";
                     break;

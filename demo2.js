@@ -17,7 +17,7 @@ camera.position.z = 6;
 camera.position.x = 0;
 camera.position.y = 0;
 
-let unit = 0.15;
+let unit = 0.16;
 const GROUP = new THREE.Group();
 
 let likeButton = document.querySelector(".like-button");
@@ -193,7 +193,7 @@ let ANIMAOPTIONS = [{
       return new THREE.Vector3(randomInRange(-1, 1), randomInRange(-1, 1), randomInRange(-1, 2)).normalize().multiplyScalar(startSpeed);
     },
     customParticleUpdate: function () {
-      let center = new THREE.Vector3(-3 * unit, 4 * unit, -7 * unit);
+      let center = new THREE.Vector3(-4 * unit, 4.5 * unit, -7 * unit);
       let d = center.distanceTo(this.position);
       let cohesionForce = center.sub(this.position).normalize().multiplyScalar(0.06 * unit * d);
       this.force[0] = cohesionForce;
